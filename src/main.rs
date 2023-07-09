@@ -113,8 +113,91 @@ fn main() {
         _ => println!("Not an important Birthday"),
     };
 }
+
+fn main() {
+    let my_age = 18;
+    let voting_age = 18;
+    match my_age.cmp(&voting_age) {
+        Ordering::Less => println!("Can't Vote"),
+        Ordering::Greater => println!("Can Vote"),
+        Ordering::Equal => println!("You gained the right to vote"),
+    };
+}
+*/
+
+/* Loops and arrays
+fn main() {
+    let arr_1 = [1,2,3,4,5,6,7,8,9];
+    println!("1st : {}", arr_1[0]);
+    println!("Length : {}", arr_1.len());
+
+    // Ways to loop (first one is weird on purpose)
+    let mut loop_idx = 0;
+    loop {
+        if arr_2[loop_idx] % 2 == 0 {
+            loop_idx += 1;
+            continue;
+        }
+        if arr_2[loop_idx] == 9 {
+            break;
+        }
+        println!("Val: {}", arr_2[loop_idx]);
+        loop_idx += 1;
+    }
+
+    loop_idx = 0;
+    while loop_idx < arr_2.len() {
+        println!("Arr : {}", arr_2[loop_idx]);
+        loop_idx += 1;
+    }
+
+    for val in arr_2.iter() {
+        println!("Val : {}", val);
+    }
+}
+*/
+
+/* Tuple
+fn main() {
+    let my_tuple: (u8, String, f64) = (47, "Derek".to_string(), 50_000.00);
+    println!("Name : {}", my_tuple.1);
+    let(v1, v2, v3) = my_tuple;
+    println!("Age : {}", v1);
+}
 */
 
 fn main() {
-    
+    let mut st1 = String::new();
+    st1.push('A');
+    st1.push_str(" word");
+    for word in st1.split_whitespace() {
+        println!("{}", word);
+    }
+    let st2 = st1.replace("A", "Another");
+    println!("{}", st2);
+
+    let st3 = String::from("x r t b h k k a m c");
+    let mut v1: Vec<char> = st3.chars().collect();
+    v1.sort();
+    v1.dedup();
+    for char in v1 {
+        println!("{}", char);
+    }
+
+    let st4: &str = "Random string";
+    // heap allocated string
+    let mut st5: String = st4.to_string();
+    println!("{}", st5);
+    let byte_arr1 = st5.as_bytes();
+    let st6 = &st5[0..6]; // 6 not included !
+    println!("String length : {}", st6.len());
+    st5.clear();
+
+    let st6 = String::from("Just some");
+    let st7 = String::from(" words");    
+    // st6 will dissapear, existing in st6_7.
+    let st6_7 = st6 + & st7;
+    for char in st6_7.bytes() {
+        println!("{}", char);
+    }
 }
