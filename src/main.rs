@@ -1,5 +1,6 @@
 #![allow(unused)]
 
+use std::fmt::Display;
 use std::io;
 use rand::Rng;
 
@@ -7,11 +8,13 @@ use rand::Rng;
 use std::io::{Write, BufReader, ErrorKind};
 use std::fs::File;
 use std::cmp::Ordering;
+use std::collections::HashMap;
 
 /* MUTABLE - INPUT - EXPECT
 fn main() {
     println!("What is your name?");
     // [...] mut [...] => mutable variable; by default, they're immutable.
+    // you can declare one immutable variable and only one mutable with the same name
     let mut name = String::new();
     let greeting = "Nice to meet you";
 
@@ -166,6 +169,7 @@ fn main() {
 }
 */
 
+/* String manipulation
 fn main() {
     let mut st1 = String::new();
     st1.push('A');
@@ -196,8 +200,199 @@ fn main() {
     let st6 = String::from("Just some");
     let st7 = String::from(" words");    
     // st6 will dissapear, existing in st6_7.
-    let st6_7 = st6 + & st7;
+    let st6_7 = st6 + &st7;
     for char in st6_7.bytes() {
         println!("{}", char);
     }
+}
+*/
+
+/* Casting
+fn main() {
+    let int_u8: u8 = 5;
+    let int2_u8: u8 = 4;
+    let int3_u32: u32 = (int_u8 as u32) + (int2_u8 as u32);
+
+}
+*/
+
+/* Enumerators
+fn main() {
+    enum Day {
+        Monday,
+        Tuesday,
+        Wednesday,
+        Thursday,
+        Friday,
+        Saturday,
+        Sunday
+    }
+
+    impl Day {
+        fn is_weekend(&self) -> bool {
+            match self {
+                Day::Saturday | Day::Sunday => true,
+                _ => false,
+            }
+        }
+    }
+    let today:Day = Day::Monday;
+    match today {
+        Day::Monday => println!("Everyone hates Monday"),
+        Day::Tuesday => println!("Donut day"),
+        Day::Wednesday => println!("Hump day"),
+        Day::Thursday => println!("Pay day"),
+        Day::Friday => println!("Almost Weekend"),
+        Day::Saturday => println!("Weekend"),
+        Day::Sunday => println!("Weekend"),
+    }
+
+    println!("Is today the weekend {}", today.is_weekend());
+}
+*/
+
+/* Vectors
+fn main() {
+    let vec1: Vec<i32> = Vec::new();
+    let mut vec2 = vec![1, 2, 3, 4];
+    vec2.push(5);
+    println!("1st : {}", vec2[0]);
+    let second: &i32 = &vec2[1];
+    match vec2.get(1) {
+        Some(second) => println!("2nd : {}", second),
+        None => println!("No 2nd value"),
+    }
+    for i in &mut vec2 {
+        *i *= 2;
+    }
+    for i in &vec2 {
+        println!("{}", i);
+    }
+    println!("Vec length {}", vec2.len());
+    println!("Pop : {:?}", vec2.pop());
+}
+ */
+
+/* Rundown of functions
+fn say_hello() {
+    println!("Hello");
+}
+
+fn get_sum(x: i32, y: i32) {
+    println!("{} + {} = {}", x, y, x+y);
+}
+
+fn get_sum_2(x: i32, y: i32) -> i32 {
+    x + y
+}
+
+fn get_sum_3(x: i32, y: i32) -> i32 {
+    return x + y;
+}
+
+fn get_2(x: i32) -> (i32, i32) {
+    return (x+1, x+2);
+}
+
+fn sum_list(list: &[i32]) -> i32 {
+    let mut sum = 0;
+    for &val in list.iter() {
+        sum += &val;
+    }
+    sum
+}
+
+fn main() {
+    say_hello();   
+    get_sum(5, 4);
+    println!("{}", get_sum_2(5, 4));
+    println!("{}", get_sum_3(5, 4));
+    let (val_1, val_2) = get_2(3);
+    println!("Nums: {} {}", val_1, val_2);
+
+    let num_list = vec![1,2,3,4,5];
+    println!("Sum of list = {}", sum_list(&num_list));
+
+}
+*/
+
+/* Basics of Generics
+use std::ops::Add;
+
+fn get_sum_gen<T:Add<Output = T>>(x: T, y: T) -> T {
+    return x + y;
+}
+
+
+fn main() {
+    println!("5 + 4 = {}", get_sum_gen(5, 4));
+    println!("5.2 + 4.6 = {}", get_sum_gen(5.2, 4.6));
+}
+*/
+
+/* IMPORTANT : Ownership
+
+
+// Stack : Stores values in a last in first out format
+// Data on the stack must have a defined fixed size
+
+// Heap : When putting data on the heap you request a certain amount of space.
+// The OS finds space available and returns for that space called a pointer.
+
+// RULES
+    // 1. Each value has a variable that's called its owner
+    // 2. There is only one owner at a time
+    // 3. When the owner goes out of scope the value dissapears
+
+fn print_str(x: String) {
+    println!("A string {}", x);
+}
+
+fn print_return_str(x: String) -> String {
+    println!("A string {}", x);
+    x
+}
+
+fn change_string(name: &mut String) {
+    name.push_str(" is happy");
+    println!("Message : {}", name);
+}
+
+fn main() {
+    let str1 = String::from("World");
+    let str2 = str1; //str1 stopped existing
+    let str2_clone = str2.clone();
+    // println!("Hello {}", str1); =>>>> Should have an error
+    println!("Hellp {}", str2); // Should be ok
+
+    print_str(str2);
+
+    // let str3 = print_return_str(str2); // value has moved when it entered print_str scope, so it triggers an error
+
+    let mut str4 = String::from("Derek");
+    change_string(&mut str4); // passing a reference is not changing the scope of a variable
+    println!("{}", str4);
+}
+*/
+
+fn main() {
+    let mut heroes = HashMap::new();
+    heroes.insert("Superman", "Clart Kent");
+    heroes.insert("Batman", "Bruce Wayne");
+    heroes.insert("The Flash", "Barry Allen");
+
+    for (k, v) in heroes.iter() {
+        println!("{} = {}", k, v);
+    }
+    println!("Length : {}", heroes.len());
+
+    // to check a specific key in a hashmap
+    if heroes.contains_key(&"Batman") {
+        let the_batman = heroes.get(&"Batman");
+        match the_batman {
+            Some(x) => println!("Batman is a hero"),
+            None => println!("Batman is not a hero"),
+        }
+    }
+    
 }
